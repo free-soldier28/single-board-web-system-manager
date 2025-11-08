@@ -1,5 +1,5 @@
 const express = require('express');
-const getLocalIp = require('../get-local-ip');
+const getLocalIp = require('../utils/get-local-ip');
 const router = express.Router();
 
 router.get('/', (req, res) => {

@@ -13,13 +13,12 @@ const config = {
   target: 'node18',
   format: 'cjs',
   outfile: 'dist/server.js',
-  external: ['express'],
   minify: true,
   plugins: [
     copy({
         assets: {
             from: ['./config.json'],
-            to: ['./'],
+            to: ['config.json'], // dist/config.json
             keepStructure: false
         },
         verbose: true

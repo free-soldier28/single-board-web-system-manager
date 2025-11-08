@@ -7,11 +7,11 @@ const CONFIG_FILE = "config.json";
 class CorsManager {
   constructor() {
     this.configPath = path.join(__dirname, CONFIG_FILE);
-    this.#loadConfig();
-    this.#watchConfig();
+    this.loadConfig();
+    this.watchConfig();
   }
 
-  #loadConfig() {
+  loadConfig() {
     const raw = fs.readFileSync(this.configPath, "utf8");
     const parsed = JSON.parse(raw);
 
@@ -29,7 +29,7 @@ class CorsManager {
     console.log("✅ CORS loaded:", [...this.allowed]);
   }
 
-  #watchConfig() {
+  watchConfig() {
     if (!this.corsConfig.reloadOnChange) return;
 
     fs.watch(this.configPath, () => {
