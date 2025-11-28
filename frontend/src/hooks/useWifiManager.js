@@ -21,7 +21,6 @@ export const useWifiManager = () => {
       ).filter(n => n.ssid);
 
       setNetworks(uniqueNetworks);
-      setMessage('Scan completed.');
 
       const statusRes = await fetch(`${API_URL}/status`);
       const statusData = await statusRes.json();

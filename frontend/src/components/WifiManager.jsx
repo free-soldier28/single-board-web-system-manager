@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { useWifiManager } from '../hooks/useWifiManager';
 
-const WifiManager = ({
-  networks,
-  loading,
-  message,
-  activeConnection,
-  fetchNetworks,
-  handleConnect,
-  handleDisconnect,
-}) => {
+const WifiManager = () => {
+  const {
+    networks,
+    loading,
+    message,
+    activeConnection,
+    fetchNetworks,
+    handleConnect,
+    handleDisconnect,
+  } = useWifiManager();
+
   const [selectedNetwork, setSelectedNetwork] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [password, setPassword] = useState('');
@@ -69,9 +72,21 @@ const WifiManager = ({
                 activeConnection?.ssid === net.ssid ? 'bg-indigo-50 border-indigo-400' : 'bg-white border-gray-200'
               }`}
             >
-              <div>
-                <strong>{net.ssid}</strong>
-                <p className="text-xs text-gray-500">{net.security || 'Open'}</p>
+              <div className="flex items-center gap-2">
+                <div className="relative">
+                  <svg className="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z" />
+                  </svg>
+                  {net.requiresPassword && (
+                    <svg className="absolute w-2.5 h-2.5 text-red-500 -bottom-0.5 -right-0.5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 1C6.48 1 2 5.48 2 11v9c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-9c0-5.52-4.48-10-10-10zm0 2c4.41 0 8 3.59 8 8v1H4v-1c0-4.41 3.59-8 8-8zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                    </svg>
+                  )}
+                </div>
+                <div>
+                  <strong>{net.ssid}</strong>
+                  <p className="text-xs text-gray-500">{net.security || 'Open'}</p>
+                </div>
               </div>
               <div className={`text-sm font-medium ${
                 net.signal > 70 ? 'text-green-600' : net.signal > 40 ? 'text-yellow-600' : 'text-red-600'
