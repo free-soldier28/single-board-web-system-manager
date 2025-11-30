@@ -44,14 +44,21 @@ class CorsManager {
 
   middleware() {
     return (req, res, next) => {
+      console.log(`🌐 CORS middleware: ${req.method} ${req.path}`);
+
       const origin = req.headers.origin;
 
       if (this.allowed.has(origin)) {
         res.setHeader("Access-Control-Allow-Origin", origin);
       }
 
-      res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+      res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
       res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+      if (req.method === 'OPTIONS') {
+        console.log('✅ CORS preflight request handled');
+        return res.sendStatus(200);
+      }
       next();
     };
   }
