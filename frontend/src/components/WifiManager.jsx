@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useWifiManager } from '../hooks/useWifiManager';
 
 const WifiManager = () => {
@@ -41,29 +41,24 @@ const WifiManager = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 sm:p-8 font-sans">
-      <div className="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-2xl">
-        <h1 className="text-2xl font-bold mb-4">🌐 WI-FI Manager</h1>
-
-        <div className="flex items-center mb-4">
+    <div className="flex flex-col">
+      <div className="p-4 sm:p-8">
+        <div className="flex items-center gap-4 mb-4">
           <button
             onClick={fetchNetworks}
             disabled={loading}
-            className={`px-4 py-2 rounded-lg font-semibold transition duration-200 ${
-              loading ? 'bg-indigo-300 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+            className={`px-4 py-2 rounded font-semibold whitespace-nowrap ${
+              loading ? 'bg-indigo-300 cursor-not-allowed' : 'bg-indigo-600 text-white hover:bg-indigo-700'
             }`}
           >
             {loading ? 'Scanning...' : 'Rescan Networks'}
           </button>
 
-          <div className="ml-auto text-sm text-gray-600">
-            Connected: {activeConnection ? <strong>{activeConnection.ssid}</strong> : <em>not connected</em>}
-          </div>
+          {message && <div className="p-3 rounded bg-green-100 text-green-800">{message}</div>}
         </div>
+      </div>
 
-        {message && <div className="mb-4 p-3 rounded bg-green-100 text-green-800">{message}</div>}
-
-        <ul className="space-y-2 max-h-80 overflow-y-auto">
+      <ul className="flex-1 overflow-y-auto space-y-2 px-4 sm:px-8 pb-8">
           {networks.map((net, i) => (
             <li
               key={i}
@@ -86,6 +81,9 @@ const WifiManager = () => {
                 <div>
                   <strong>{net.ssid}</strong>
                   <p className="text-xs text-gray-500">{net.security || 'Open'}</p>
+                  {activeConnection?.ssid === net.ssid && (
+                    <p className="text-xs text-green-600 font-semibold">Connected</p>
+                  )}
                 </div>
               </div>
               <div className={`text-sm font-medium ${
@@ -108,36 +106,35 @@ const WifiManager = () => {
           ))}
         </ul>
 
-        {showModal && selectedNetwork && (
-          <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-80">
-              <h2 className="text-lg font-semibold mb-4">Connect to {selectedNetwork.ssid}</h2>
-              <input
-                type="password"
-                placeholder="Enter password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-3 border rounded mb-4"
-              />
-              <div className="flex justify-end gap-3">
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={confirmConnect}
-                  disabled={!password}
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
-                >
-                  Connect
-                </button>
-              </div>
+      {showModal && selectedNetwork && (
+        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-80">
+            <h2 className="text-lg font-semibold mb-4">Connect to {selectedNetwork.ssid}</h2>
+            <input
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-3 border rounded mb-4"
+            />
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmConnect}
+                disabled={!password}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
+              >
+                Connect
+              </button>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

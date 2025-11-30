@@ -50,7 +50,6 @@ export const useWifiManager = () => {
 
       const data = await response.json();
       if (response.ok) {
-        setMessage(`Successfully connected to ${ssid}!`);
         setActiveConnection({ ssid, state: data.state });
       } else {
         setMessage(`Connection failed: ${data.error}`);
