@@ -1,4 +1,5 @@
 import { useBluetoothManager } from '../hooks/useBluetoothManager';
+import { IoBluetoothSharp } from 'react-icons/io5';
 
 const BluetoothManager = () => {
   const {
@@ -14,28 +15,28 @@ const BluetoothManager = () => {
   } = useBluetoothManager();
 
   return (
-    <div>
-      <h2 className="text-xl font-bold mb-4">🔵 Bluetooth Devices</h2>
+    <div className="flex flex-col">
+      <div className="p-4 sm:p-8">
+        <div className="flex items-center gap-4 mb-4">
+          <button
+            onClick={fetchDevices}
+            disabled={loading}
+            className={`px-4 py-2 rounded font-semibold whitespace-nowrap ${
+              loading ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'
+            }`}
+          >
+            {loading ? 'Scanning...' : 'Rescan Devices'}
+          </button>
 
-      <button
-        onClick={fetchDevices}
-        disabled={loading}
-        className={`mb-4 px-4 py-2 rounded ${
-          loading ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'
-        }`}
-      >
-        {loading ? 'Scanning...' : 'Rescan Devices'}
-      </button>
+          {message && <div className="p-3 rounded bg-green-100 text-green-800">{message}</div>}
+        </div>
+      </div>
 
-      {message && <div className="mb-4 p-3 rounded bg-green-100 text-green-800">{message}</div>}
-
-      <ul className="space-y-2 max-h-80 overflow-y-auto">
+      <ul className="flex-1 overflow-y-auto space-y-2 px-4 sm:px-8 pb-8">
         {devices.map((dev, i) => (
           <li key={i} className="p-3 border rounded-lg bg-white flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <svg className="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V21h1l5.71-5.71-4.3-4.29 4.3-4.29zM7 5.5c.83 0 1.5-.67 1.5-1.5S7.83 2.5 7 2.5 5.5 3.17 5.5 4 6.17 5.5 7 5.5zm5.5 13c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z" />
-              </svg>
+              <IoBluetoothSharp className="w-6 h-6 text-black" />
               <div>
                 <strong>{dev.name || 'Unknown Device'}</strong>
                 <p className="text-xs text-gray-500">{dev.mac}</p>
@@ -49,14 +50,14 @@ const BluetoothManager = () => {
               {dev.isConnected ? (
                 <button
                   onClick={() => disconnect(dev.mac)}
-                  className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                  className="w-24 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                 >
                   Disconnect
                 </button>
               ) : (
                 <button
                   onClick={() => connect(dev.mac)}
-                  className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  className="w-24 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                 >
                   Connect
                 </button>
@@ -65,14 +66,14 @@ const BluetoothManager = () => {
               {dev.paired ? (
                 <button
                   onClick={() => unpair(dev.mac)}
-                  className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                  className="w-24 px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
                 >
                   Unpair
                 </button>
               ) : (
                 <button
                   onClick={() => pair(dev.mac)}
-                  className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700"
+                  className="w-24 px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700"
                 >
                   Pair
                 </button>

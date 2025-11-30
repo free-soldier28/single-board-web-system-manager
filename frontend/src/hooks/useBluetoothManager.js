@@ -18,6 +18,7 @@ export const useBluetoothManager = () => {
         const data = await res.json();
 
         setDevices(data?.devices ?? []);
+        setMessage('');
       }
 
       const [pairedRes, availableRes] = await Promise.all([
@@ -42,6 +43,7 @@ export const useBluetoothManager = () => {
       );
 
       setDevices(mergedDevices);
+      setMessage('');
     } catch (err) {
       setMessage(`Error: ${err.message}`);
     } finally {
