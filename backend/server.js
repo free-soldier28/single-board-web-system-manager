@@ -13,6 +13,7 @@ app.use(corsManager.middleware());
 
 app.use(`${BASE_URL}/test`, require('./routes/test'));
 app.use(`${BASE_URL}/wifi`, require('./routes/wifi'));
+app.use(`${BASE_URL}/bluetooth`, require('./routes/bluetooth'));
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Server running at http://${getLocalIp()}:${PORT}`);
